@@ -1,10 +1,11 @@
-﻿#!/usr/bin/env bash
-# BullSight AI — Team Mac/Linux Launcher
+#!/usr/bin/env bash
+# BullSight AI — Team Mac/Linux Enterprise Launcher
 set -e
 
 echo "==============================================================================="
 echo "               BULLSIGHT - AI STOCK INTELLIGENCE DASHBOARD"
 echo "                    'See the Bull. Predict the Move.'"
+echo "             Enterprise Multi-Tier Architecture (BEE Compliant)"
 echo "==============================================================================="
 echo ""
 
@@ -26,7 +27,7 @@ echo "[OK] Node.js detected: $(node --version)"
 
 # 3. Setup Backend venv
 echo ""
-echo "[1/4] Checking Python Virtual Environment..."
+echo "[1/5] Checking Python Virtual Environment..."
 if [ ! -f "backend/venv/bin/activate" ]; then
     echo "Creating virtual environment in backend/venv..."
     python3 -m venv backend/venv
@@ -34,11 +35,11 @@ if [ ! -f "backend/venv/bin/activate" ]; then
     backend/venv/bin/pip install --upgrade pip
     backend/venv/bin/pip install -r backend/requirements.txt
 else
-    echo "Virtual environment already configured."
+    echo "Python virtual environment already configured."
 fi
 
 # 4. Setup .env
-echo "[2/4] Checking backend configuration..."
+echo "[2/5] Checking backend configuration..."
 if [ ! -f "backend/.env" ]; then
     if [ -f "backend/.env.example" ]; then
         cp backend/.env.example backend/.env
@@ -46,8 +47,17 @@ if [ ! -f "backend/.env" ]; then
     fi
 fi
 
-# 5. Setup Frontend
-echo "[3/4] Checking frontend dependencies..."
+# 5. Setup Express Gateway
+echo "[3/5] Checking Express REST API Gateway dependencies..."
+if [ ! -d "server/node_modules" ]; then
+    echo "Installing Express Gateway npm packages..."
+    (cd server && npm install)
+else
+    echo "Express Gateway dependencies already configured."
+fi
+
+# 6. Setup Frontend
+echo "[4/5] Checking frontend dependencies..."
 if [ ! -d "frontend/node_modules" ]; then
     echo "Installing frontend npm packages..."
     (cd frontend && npm install)
@@ -55,17 +65,21 @@ else
     echo "Frontend node_modules already configured."
 fi
 
-# 6. Start Services
+# 7. Start Services
 echo ""
-echo "[4/4] Starting BullSight Services..."
-echo " - Backend API:  http://127.0.0.1:8000"
-echo " - Frontend UI:  http://localhost:3000"
+echo "[5/5] Starting BullSight Services..."
+echo " (1) Python FastAPI ML Engine:      http://127.0.0.1:8000"
+echo " (2) Express REST API Gateway:      http://localhost:5000"
+echo " (3) React Vite Dashboard:          http://localhost:3000"
 echo ""
 
 # Trap exit to kill child background processes cleanly on Ctrl+C
 trap 'kill 0' EXIT
 
 (cd backend && ./venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload) &
+sleep 2
+
+(cd server && npm start) &
 sleep 2
 
 (cd frontend && npm run dev) &
@@ -79,9 +93,10 @@ elif command -v xdg-open &> /dev/null; then
 fi
 
 echo "==============================================================================="
-echo "[SUCCESS] BullSight is running! Press CTRL+C to stop both servers."
-echo "Dashboard: http://localhost:3000"
-echo "API Docs:  http://127.0.0.1:8000/docs"
+echo "[SUCCESS] BullSight Multi-Tier Stack is running! Press CTRL+C to stop all servers."
+echo " - Dashboard:   http://localhost:3000"
+echo " - REST Gateway: http://localhost:5000/api/health"
+echo " - API Docs:     http://127.0.0.1:8000/docs"
 echo "==============================================================================="
 
 wait

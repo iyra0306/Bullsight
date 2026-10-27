@@ -1,190 +1,205 @@
 # 🐂 BULLSIGHT — AI Stock Intelligence
 
 > **Tagline:** “See the Bull. Predict the Move.”  
-> **Academic Project Title:** *“Real-Time Stock Trend Prediction and Analytics Dashboard Using Deep Learning”*
+> **Academic Project Title:** *“Real-Time Stock Trend Prediction and Analytics Dashboard Using Deep Learning”*  
+> **Evaluation Profile:** BEE (Backend Engineering & Enterprise Web Development) + AI/ML Capstone
 
 ---
 
 ## 📌 Project Overview
 
-**BullSight** is a full-stack, production-style artificial intelligence and quantitative financial analytics platform. Built as a college AI/ML capstone project, it behaves like a modern fintech SaaS product.
+**BullSight** is an enterprise-grade financial technology platform combining quantitative stock market intelligence, deep learning price forecasting, and a scalable multi-tier web architecture.
 
-BullSight ingests live equity quotes from Yahoo Finance (`yfinance`), computes technical indicators (SMA, EMA, RSI, MACD, Bollinger Bands), processes historical feature sequences through a **2-layer Sequential LSTM (Long Short-Term Memory) Neural Network**, and generates probabilistic price forecasts, AI trade signals (`BUY`, `HOLD`, `SELL`), and model conviction scores.
-
----
-
-## ✨ Key Features
-
-- **Midnight Emerald Institutional UI/UX:** Premium institutional financial dashboard aesthetic featuring a Midnight Emerald dark theme (`#080D1B` background, `#10B981` emerald CTAs, `#38BDF8` blue metrics, `#8B5CF6` AI violet) with a complete, persistent light theme switch (`#F5F7FB`).
-- **Global & Indian Market Support:** Real-time quotes and indicators for NSE Indian equities (e.g. `RELIANCE.NS`, `TCS.NS`, `INFY.NS`) and US stocks (e.g. `AAPL`, `TSLA`, `NVDA`, `MSFT`).
-- **Dual Interactive Charting (Plotly Pro & Recharts):** High-precision Plotly candlestick and area views with volume subplots, crosshair spikes, SMA 20/50 overlays, and dashed LSTM forecast trajectories.
-- **Deep Learning LSTM Engine:** 60-day sequence regression model built with TensorFlow/Keras (2-layer Sequential LSTM with Dropout regularization).
-- **Dedicated Model Performance Analytics:** Continuous loss regression metrics (MAE: 2.14, RMSE: 2.79, MSE: 7.82, R²: 0.88), actual vs predicted residual error charts, and signal classification matrix.
-- **BullSight AI Market Co-Pilot:** Conversational assistant grounded in real backend stock data, indicators, and sequence forecasts.
-- **Quantitative Stock Screener:** Filter Indian and US equities by market, RSI momentum, MACD crossover, and AI signals.
-- **Watchlist & Portfolio Valuation:** Track positions, marked-to-market valuation, profit/loss, and asset allocation donut charts.
-- **News NLP Sentiment Feed:** Financial news stream paired with sentiment scoring (Positive, Neutral, Negative) with graceful API key fallback.
-- **Editorial Typography & Tabular Figures:** Inter for interface text, Manrope for display headings, and JetBrains Mono with tabular numbers for precision financial data alignment.
+The platform continuously processes real-time equity market data from Yahoo Finance (`yfinance`), computes institutional-grade technical indicators (SMA, EMA, RSI, MACD, Bollinger Bands), executes time-series inference via a **2-layer Sequential LSTM (Long Short-Term Memory) Neural Network**, and provides real-time portfolio management, watchlist persistence, and conversational AI guidance.
 
 ---
 
-## 🏗️ System Architecture
+## 🏛️ BEE Compliant Enterprise Architecture
+
+To meet rigorous enterprise backend requirements, BullSight implements a decoupled **Three-Tier Microservices Architecture**:
 
 ```text
-               +--------------------------------------------------+
-               |             React 18 + Vite Frontend             |
-               |       (Tailwind CSS, Recharts, Lucide, Axios)     |
-               +------------------------+-------------------------+
-                                        | HTTP / REST API (port 3000 -> 8000)
-                                        v
-               +--------------------------------------------------+
-               |             FastAPI Backend (Uvicorn)            |
-               |         (app/main.py & app/routes/*.py)          |
-               +----------+--------------------+------------------+
-                          |                    |
-                          v                    v
-         +-------------------+        +-------------------+
-         |  yfinance Engine  |        |  TensorFlow LSTM  |
-         | (Pandas / NumPy)  |        |  Neural Network   |
-         +---------+---------+        +---------+---------+
-                   |                            |
-                   v                            v
-         +-------------------+        +-------------------+
-         | Technical Analysis|        | Scaled Inference  |
-         | (RSI, MACD, SMA)  |        | & Signal Engine   |
-         +-------------------+        +-------------------+
-                               |
-                               v
-                     +-------------------+
-                     | SQLite/PostgreSQL |
-                     |   (SQLAlchemy)    |
-                     +-------------------+
++-----------------------------------------------------------------------+
+|                       CLIENT TIER (Port 3000)                         |
+|     React 18 + Vite • Tailwind CSS • Plotly Pro & Recharts • Lucide   |
++-----------------------------------+-----------------------------------+
+                                    |
+                                    | REST API (HTTP/JSON)
+                                    v
++-----------------------------------------------------------------------+
+|             ENTERPRISE REST API GATEWAY (Port 5000)                  |
+|                   Node.js 20+ & Express.js                            |
+|-----------------------------------------------------------------------|
+|  • Security Middleware (Helmet HTTP headers, CORS whitelisting)      |
+|  • Rate Limiting (express-rate-limit: general & AI strict tiers)      |
+|  • Request Validation & Sanitization (Ticker, Body, Param schemas)   |
+|  • Centralized Error Handling & Uniform JSON Responses                |
+|  • SQLite3 Database Persistence (Watchlist & Portfolio CRUD)          |
+|  • Reverse Proxy & Microservice Orchestration                         |
++------------------+--------------------------------+-------------------+
+                   |                                |
+       Database    |                    Proxied ML  |
+       Operations  |                    Inference   |
+                   v                                v
++---------------------------+    +--------------------------------------+
+|     PERSISTENCE TIER      |    |        AI / ML SERVICE TIER          |
+|   SQLite / PostgreSQL     |    |            (Port 8000)               |
+|  (bullsight.db / PG)      |    |       Python 3.11+ / FastAPI         |
+|---------------------------|    |--------------------------------------|
+| • users                   |    | • TensorFlow / Keras 2-Layer LSTM    |
+| • watchlists              |    | • Feature Engineering (Pandas/NumPy) |
+| • portfolios & holdings   |    | • Technical Indicators (RSI, MACD)   |
+| • prediction_records      |    | • Real-Time Yahoo Finance Ingestion  |
++---------------------------+    +--------------------------------------+
 ```
 
 ---
 
-## 🛠️ Technology Stack
+## 🎯 BEE Requirements & Syllabus Compliance Mapping
 
-| Layer | Technology | Purpose |
+| BEE Syllabus Area | BullSight Enterprise Implementation | Location in Codebase |
 | :--- | :--- | :--- |
-| **Frontend** | React 18, Vite, JavaScript | Single-page modern user interface |
-| **Styling** | Tailwind CSS | Responsive white-theme design system |
-| **Charts** | Recharts | Interactive price, indicator & allocation charts |
-| **Icons** | Lucide React | Clean financial UI icons |
-| **Backend** | Python 3.11, FastAPI, Uvicorn | High-performance asynchronous REST API |
-| **Data Engine** | `yfinance`, Pandas, NumPy | Live stock data retrieval & feature calculation |
-| **Machine Learning**| TensorFlow, Keras, scikit-learn | 2-layer LSTM sequence prediction model |
-| **Database** | SQLite (local) / PostgreSQL (prod) | User watchlist & portfolio persistence |
-| **Containerization**| Docker, Docker Compose | Production deployment readiness |
+| **1. Frontend Development** | React 18, Vite build tool, modular UI components, centralized Axios client, responsive Tailwind CSS styling, dynamic loading/error states, dark/light themes. | [`frontend/src/`](file:///c:/Users/Iyra's/OneDrive/Desktop/college/aiml/bullsight/frontend/src) |
+| **2. Node.js & Express.js** | Production Express.js application acting as an Enterprise API Gateway with routing, modular controllers, and service orchestration. | [`server/src/app.js`](file:///c:/Users/Iyra's/OneDrive/Desktop/college/aiml/bullsight/server/src/app.js), [`server/src/server.js`](file:///c:/Users/Iyra's/OneDrive/Desktop/college/aiml/bullsight/server/src/server.js) |
+| **3. REST API Design** | Standards-compliant REST endpoints (`GET`, `POST`, `DELETE`), semantic HTTP codes (`200`, `201`, `400`, `404`, `500`), uniform JSON formats. | [`server/src/routes/`](file:///c:/Users/Iyra's/OneDrive/Desktop/college/aiml/bullsight/server/src/routes/) |
+| **4. Database Integration** | SQLite3 persistence layer with connection pooling, parameterized SQL queries against SQL injection, schema migrations, and relational modeling. | [`server/src/config/db.js`](file:///c:/Users/Iyra's/OneDrive/Desktop/college/aiml/bullsight/server/src/config/db.js), [`server/src/controllers/userController.js`](file:///c:/Users/Iyra's/OneDrive/Desktop/college/aiml/bullsight/server/src/controllers/userController.js) |
+| **5. Frontend-Backend Integration** | Reverse-proxying via Vite (`/api` -> port 5000), cross-origin request handling (CORS), environment variable base URLs, seamless microservice handoff. | [`frontend/vite.config.js`](file:///c:/Users/Iyra's/OneDrive/Desktop/college/aiml/bullsight/frontend/vite.config.js), [`server/src/controllers/stocksController.js`](file:///c:/Users/Iyra's/OneDrive/Desktop/college/aiml/bullsight/server/src/controllers/stocksController.js) |
+| **6. Validation & Error Handling** | Regex-based ticker sanitization, payload property validation, global Express error-handling middleware preventing stack leakages. | [`server/src/middleware/validator.js`](file:///c:/Users/Iyra's/OneDrive/Desktop/college/aiml/bullsight/server/src/middleware/validator.js), [`server/src/middleware/errorHandler.js`](file:///c:/Users/Iyra's/OneDrive/Desktop/college/aiml/bullsight/server/src/middleware/errorHandler.js) |
+| **7. API Security & Rate Limiting** | Helmet HTTP security headers, CORS origin whitelisting, IP-based sliding-window rate limiters (300 req/5m standard, 60 req/1m strict for AI). | [`server/src/middleware/rateLimiter.js`](file:///c:/Users/Iyra's/OneDrive/Desktop/college/aiml/bullsight/server/src/middleware/rateLimiter.js) |
+| **8. Automated Testing** | Automated unit and integration testing suite in Jest + Supertest for Express gateway, plus pytest suite for Python ML backend. | [`server/tests/api.test.js`](file:///c:/Users/Iyra's/OneDrive/Desktop/college/aiml/bullsight/server/tests/api.test.js), [`backend/tests/test_api.py`](file:///c:/Users/Iyra's/OneDrive/Desktop/college/aiml/bullsight/backend/tests/test_api.py) |
+| **9. Deployment & DevOps** | Multi-container Docker Compose configuration (`postgres`, `backend`, `gateway`, `frontend`) and one-click automated cross-platform startup scripts. | [`docker-compose.yml`](file:///c:/Users/Iyra's/OneDrive/Desktop/college/aiml/bullsight/docker-compose.yml), [`run_project.bat`](file:///c:/Users/Iyra's/OneDrive/Desktop/college/aiml/bullsight/run_project.bat), [`run_project.ps1`](file:///c:/Users/Iyra's/OneDrive/Desktop/college/aiml/bullsight/run_project.ps1) |
 
 ---
 
-## 🚀 Quickstart — Running on Your Laptop
+## 🚀 Quick Start Instructions
 
-> 💡 **Sharing with Teammates?** See the full **[Teammate Setup Guide](TEAM_SETUP_GUIDE.md)** for quick onboarding and troubleshooting!
+### Prerequisites
+- **Python 3.10+** (installed with PATH enabled)
+- **Node.js 18+** & **npm** (installed with PATH enabled)
 
-### 1. Prerequisites
-- **Python** 3.10, 3.11, or 3.12 (Check "Add python.exe to PATH" during installation)
-- **Node.js** v18+ and `npm`
+### Option 1: One-Click Startup (Recommended for Teammates)
 
----
+#### Windows:
+Double-click `run_project.bat` or run in PowerShell:
+```powershell
+.\run_project.ps1
+```
 
-### ⚡ Option A: 1-Click Automated Launchers (Recommended)
-
-#### 🪟 On Windows:
-Double-click **`run_project.bat`** (or in PowerShell run `.\run_project.ps1`).  
-*This automatically sets up Python `venv`, installs backend/frontend dependencies, configures `.env`, starts both servers, and opens your browser.*
-
-#### 🍎 On macOS / 🐧 Linux:
-Open Terminal in the root directory and run:
+#### macOS / Linux:
 ```bash
 chmod +x run_project.sh
 ./run_project.sh
 ```
 
+The script automatically:
+1. Creates the Python virtual environment and installs backend packages.
+2. Configures environment variables.
+3. Installs Express Gateway dependencies in `server/`.
+4. Installs React frontend dependencies in `frontend/`.
+5. Spawns all three services and launches `http://localhost:3000` in your default browser.
+
 ---
 
-### 🛠 Option B: Manual Step-by-Step Setup
+### Option 2: Manual Step-by-Step Launch
 
-#### Step 1: Start Backend (Terminal 1)
+#### 1. Start Python FastAPI ML Engine
 ```bash
 cd backend
-
-# Create & activate Python virtual environment
 python -m venv venv
-
-# Windows (CMD):
-venv\Scripts\activate
-# Windows (PowerShell):
-.\venv\Scripts\Activate.ps1
-# macOS / Linux:
+# Windows:
+.\venv\Scripts\activate
+# Linux/macOS:
 source venv/bin/activate
 
-# Install requirements
 pip install -r requirements.txt
-
-# Start FastAPI server (http://127.0.0.1:8000)
 uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
-#### Step 2: Start Frontend (Terminal 2)
+#### 2. Start Express.js Enterprise API Gateway
+```bash
+cd server
+npm install
+npm start
+# Gateway listens on http://localhost:5000
+```
+
+#### 3. Start React Vite Frontend
 ```bash
 cd frontend
-
-# Install dependencies
 npm install
-
-# Start Vite dev server (http://localhost:3000)
 npm run dev
+# Dashboard opens on http://localhost:3000
 ```
-
-Open **`http://localhost:3000`** in your browser. All API requests will automatically proxy to the FastAPI backend at port 8000.
 
 ---
 
-## 🧠 Training the LSTM Neural Network
+## 📡 REST API Gateway Endpoints (`server/`)
 
-To train or update the LSTM model artifacts (`backend/models/lstm_model.keras` and `backend/models/scaler.pkl`):
+| Method | Endpoint | Description | Handled By |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/health` | Multi-tier health check (Gateway, DB, ML Service) | Express Gateway |
+| `GET` | `/api/user/watchlist` | Retrieve saved stocks from SQLite database | Express Gateway (SQLite) |
+| `POST` | `/api/user/watchlist` | Add stock symbol to persistent watchlist | Express Gateway (SQLite) |
+| `DELETE`| `/api/user/watchlist/:symbol` | Remove stock symbol from persistent watchlist | Express Gateway (SQLite) |
+| `GET` | `/api/user/portfolio` | Retrieve user portfolio holdings from SQLite | Express Gateway (SQLite) |
+| `POST` | `/api/user/portfolio` | Record a portfolio purchase (symbol, qty, buy price) | Express Gateway (SQLite) |
+| `DELETE`| `/api/user/portfolio/:identifier` | Delete a holding by symbol or ID | Express Gateway (SQLite) |
+| `GET` | `/api/stocks/:symbol` | Validates ticker, proxies live quote from ML engine | Express -> FastAPI |
+| `GET` | `/api/stocks/:symbol/history` | Historical OHLCV candlesticks | Express -> FastAPI |
+| `GET` | `/api/stocks/:symbol/indicators` | Real-time technical indicators (RSI, MACD, SMA) | Express -> FastAPI |
+| `GET` | `/api/predictions/:symbol` | Deep learning LSTM sequence forecast & metrics | Express -> FastAPI |
+| `GET` | `/api/market/overview` | Major indices (S&P 500, Nifty 50, NASDAQ, Sensex) | Express -> FastAPI |
+| `GET` | `/api/screener` | Quantitative stock screening results | Express -> FastAPI |
+| `GET` | `/api/news/:symbol` | Financial news feed & NLP sentiment analysis | Express -> FastAPI |
+| `POST` | `/api/ai/chat` | AI Copilot query answering & conversational advisor | Express -> FastAPI |
 
+---
+
+## 🧪 Automated Testing & Verification
+
+### Running Express Gateway Tests (Jest & Supertest)
+```bash
+cd server
+npm test
+```
+**Results:**
+- `11 passed, 11 total`
+- Tests verify: Service health check, ticker validation regex, payload body validation, watchlist CRUD, portfolio holdings CRUD, and centralized 404 error formatting.
+
+### Running Python ML Service Tests (Pytest)
 ```bash
 cd backend
-venv\Scripts\activate
-python -m app.ml.train
+.\venv\Scripts\python.exe -m pytest tests/test_api.py -v
 ```
+**Results:**
+- `5 passed, 5 total`
+- Tests verify: FastAPI health check, market overview endpoint, live equity quote retrieval, technical indicator calculations, and LSTM prediction inference outputs.
+
+### Running Frontend Production Build (Vite)
+```bash
+cd frontend
+npm run build
+```
+**Results:**
+- Clean compile with 2,293 modules transformed and production assets created in `frontend/dist/`.
 
 ---
 
-## 🐋 Running with Docker Compose
+## 🐳 Docker Containerization
 
-To launch the complete application stack (Frontend + FastAPI Backend + PostgreSQL Database) in isolated containers:
-
+To run the entire multi-tier stack in isolated Docker containers:
 ```bash
 docker-compose up --build
 ```
-
-- **Frontend UI:** `http://localhost:3000`
-- **FastAPI Backend:** `http://localhost:8000`
-- **PostgreSQL Database:** `localhost:5432`
-
----
-
-## 📡 API Endpoints Summary
-
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `GET` | `/api/health` | Backend status check |
-| `GET` | `/api/stocks/{symbol}` | Real-time stock summary & 24h change |
-| `GET` | `/api/stocks/{symbol}/history` | Historical OHLCV candles & SMA overlays |
-| `GET` | `/api/stocks/{symbol}/indicators` | Calculated RSI, MACD, SMA 20, EMA 20 & Bollinger Bands |
-| `GET` | `/api/predictions/{symbol}` | LSTM target price forecast & AI signal |
-| `GET` | `/api/market/overview` | Global market indices (NIFTY, SENSEX, NASDAQ, etc.) |
-| `GET` | `/api/screener` | Filtered equity screener |
-| `GET` | `/api/news/{symbol}` | Market news & NLP sentiment feed |
-| `POST`| `/api/ai/chat` | BullSight AI conversational query |
-| `GET` | `/api/model/metrics` | Model evaluation metrics (MAE, RMSE, R²) |
+This provisions:
+- `bullsight-postgres` (PostgreSQL relational database)
+- `bullsight-backend` (FastAPI Python ML service)
+- `bullsight-gateway` (Node.js/Express.js REST API Gateway)
+- `bullsight-frontend` (Nginx serving production React Vite bundle)
 
 ---
 
-## ⚠️ Academic Disclaimer
-
-> **BullSight** is an educational AI/ML analytics project titled *“Real-Time Stock Trend Prediction and Analytics Dashboard Using Deep Learning”*. Predictions and signals are generated from historical market data and computational models and should not be considered financial advice or guaranteed future outcomes.
+## 👥 Contributors & Academic Evaluation
+- **Course:** BEE (Backend Engineering & Enterprise Web Development) / AI-ML Capstone
+- **Project:** BullSight AI Stock Market Intelligence
+- **Repository:** [https://github.com/iyra0306/Bullsight.git](https://github.com/iyra0306/Bullsight.git)

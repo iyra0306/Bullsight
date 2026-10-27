@@ -1,16 +1,17 @@
 @echo off
-title BullSight AI ? Team Quickstart Launcher
+title BullSight AI — Team Enterprise Launcher
 cls
 echo ===============================================================================
 echo                BULLSIGHT - AI STOCK INTELLIGENCE DASHBOARD
 echo                     "See the Bull. Predict the Move."
+echo             Enterprise Multi-Tier Architecture (BEE Compliant)
 echo ===============================================================================
 echo.
 
 python --version >nul 2>&1
 if %ERRORLEVEL% NEQ 0 (
     echo [ERROR] Python is not installed or not in PATH!
-    echo Please install Python 3.10 or 3.11 from https://www.python.org/
+    echo Please install Python 3.10, 3.11, or 3.12 from https://www.python.org/
     echo Make sure to check the box: "Add python.exe to PATH"
     echo.
     pause
@@ -29,7 +30,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo [OK] Node.js detected.
 
 echo.
-echo [1/4] Checking Python Virtual Environment...
+echo [1/5] Checking Python Virtual Environment (FastAPI ML Service)...
 if not exist "backend\venv\Scripts\activate.bat" (
     echo Creating virtual environment in backend\venv...
     python -m venv backend\venv
@@ -40,7 +41,7 @@ if not exist "backend\venv\Scripts\activate.bat" (
     echo Virtual environment already exists.
 )
 
-echo [2/4] Checking backend configuration...
+echo [2/5] Checking backend configuration...
 if not exist "backend\.env" (
     if exist "backend\.env.example" (
         copy "backend\.env.example" "backend\.env" >nul
@@ -51,9 +52,19 @@ if not exist "backend\.env" (
     )
 )
 
-echo [3/4] Checking frontend dependencies...
+echo [3/5] Checking Express REST API Gateway dependencies...
+if not exist "server\node_modules" (
+    echo Installing Express Gateway npm packages...
+    cd server
+    call npm install
+    cd ..
+) else (
+    echo Express Gateway dependencies already installed.
+)
+
+echo [4/5] Checking Frontend dependencies...
 if not exist "frontend\node_modules" (
-    echo Installing frontend npm packages (this may take 1-2 minutes)...
+    echo Installing frontend npm packages...
     cd frontend
     call npm install
     cd ..
@@ -62,24 +73,29 @@ if not exist "frontend\node_modules" (
 )
 
 echo.
-echo [4/4] Starting BullSight Services...
-echo - Backend API will run on:  http://127.0.0.1:8000
-echo - Frontend UI will run on:  http://localhost:3000
+echo [5/5] Starting BullSight Multi-Tier Services...
+echo  (1) Python FastAPI ML Engine:      http://127.0.0.1:8000
+echo  (2) Express REST API Gateway:      http://localhost:5000
+echo  (3) React Vite Dashboard:          http://localhost:3000
 echo.
 
-start "BullSight Backend (FastAPI :8000)" cmd /k "cd backend && venv\Scripts\activate && uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload"
+start "BullSight (1) Python FastAPI ML (:8000)" cmd /k "cd backend && venv\Scripts\activate && uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload"
 timeout /t 3 /nobreak >nul
 
-start "BullSight Frontend (Vite :3000)" cmd /k "cd frontend && npm run dev"
+start "BullSight (2) Express API Gateway (:5000)" cmd /k "cd server && npm start"
+timeout /t 2 /nobreak >nul
+
+start "BullSight (3) React Vite Frontend (:3000)" cmd /k "cd frontend && npm run dev"
 timeout /t 3 /nobreak >nul
 
 start http://localhost:3000
 
 echo ===============================================================================
-echo [SUCCESS] BullSight is running!
-echo Dashboard:  http://localhost:3000
-echo API Docs:   http://127.0.0.1:8000/docs
+echo [SUCCESS] BullSight Multi-Tier Stack is now running!
+echo  - Frontend Dashboard:   http://localhost:3000
+echo  - Express REST Gateway: http://localhost:5000/api/health
+echo  - Python ML API Docs:   http://127.0.0.1:8000/docs
 echo.
-echo To stop the servers, close the two opened terminal windows.
+echo To stop services, close each opened terminal window.
 echo ===============================================================================
 pause

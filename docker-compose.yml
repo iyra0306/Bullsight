@@ -31,6 +31,22 @@ services:
     depends_on:
       - postgres
 
+  gateway:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: bullsight-gateway
+    restart: always
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - PYTHON_SERVICE_URL=http://backend:8000
+      - DATABASE_PATH=/app/bullsight.db
+    ports:
+      - "5000:5000"
+    depends_on:
+      - backend
+
   frontend:
     build:
       context: ./frontend
@@ -40,7 +56,7 @@ services:
     ports:
       - "3000:80"
     depends_on:
-      - backend
+      - gateway
 
 volumes:
   postgres_data:
