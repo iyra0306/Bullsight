@@ -1,0 +1,108 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --bs-bg-main: #f4f7f5;
+    --bs-bg-secondary: #eaf0ec;
+    --bs-bg-card: #ffffff;
+    --bs-bg-elevated: #f0f5f2;
+    --bs-accent: #1ea866;
+    --bs-accent-muted: #d6f3e3;
+    --bs-mint: #137949;
+    --bs-text-main: #101814;
+    --bs-text-secondary: #53645a;
+    --bs-border: rgba(16, 24, 20, 0.1);
+    --bs-danger: #d94848;
+  }
+
+  .dark {
+    --bs-bg-main: #101512;
+    --bs-bg-secondary: #141c17;
+    --bs-bg-card: #18211c;
+    --bs-bg-elevated: #202b24;
+    --bs-accent: #36c982;
+    --bs-accent-muted: #214b37;
+    --bs-mint: #a5ebc3;
+    --bs-text-main: #e8f0ea;
+    --bs-text-secondary: #91a197;
+    --bs-border: rgba(255, 255, 255, 0.08);
+    --bs-danger: #ef6461;
+  }
+
+  html {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    scroll-behavior: smooth;
+    background-color: var(--bs-bg-main);
+    color: var(--bs-text-main);
+  }
+
+  h1, h2, h3, h4, h5, h6, .font-display {
+    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  .font-mono-num {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Custom subtle grid texture for fintech surfaces */
+.bg-fintech-grid {
+  background-image:
+    linear-gradient(to right, rgba(54, 201, 130, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(54, 201, 130, 0.05) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.dark .bg-fintech-grid {
+  background-image:
+    linear-gradient(to right, rgba(165, 235, 195, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(165, 235, 195, 0.035) 1px, transparent 1px);
+}
+
+/* Hide default cursor only when custom desktop cursor is active */
+@media (hover: hover) and (pointer: fine) {
+  body.has-custom-cursor,
+  body.has-custom-cursor a,
+  body.has-custom-cursor button,
+  body.has-custom-cursor [role="button"],
+  body.has-custom-cursor input,
+  body.has-custom-cursor select,
+  body.has-custom-cursor textarea,
+  body.has-custom-cursor label,
+  body.has-custom-cursor [data-cursor] {
+    cursor: none !important;
+  }
+}
+
+/* Custom thin scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(145, 161, 151, 0.25);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(54, 201, 130, 0.45);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
